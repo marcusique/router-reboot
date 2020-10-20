@@ -1,7 +1,16 @@
 const Nightmare = require('nightmare'),
     nightmare = Nightmare({ show: true }),
+    Xvfb = require('xvfb'),
+    xvfb = new Xvfb(),
     winston = require('winston'),
     now = new Date();
+
+try {
+    xvfb.startSync();
+}
+catch (e) {
+    console.log(e);
+}
 
 const logger = winston.createLogger({
     format: winston.format.simple(),
