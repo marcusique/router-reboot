@@ -35,5 +35,5 @@ nightmare
         console.log('Router restarted successfully at ' + now)
     })
     .catch(err => {
-        console.error('An error occured', err)
+        console.error(`[${now}] An unknown error occured. ${err}`)
     })
