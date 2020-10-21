@@ -12,8 +12,8 @@ const initNightmare = require('nightmare'),
 const logger = winston.createLogger({
     format: winston.format.simple(),
     transports: [
-        new winston.transports.File({ filename: 'router-reboot.log' }),
-        //new winston.transports.File({ filename: 'var/log/router-reboot.log' })
+        //new winston.transports.File({ filename: 'router-reboot.log' }),
+        new winston.transports.File({ filename: 'var/log/router-reboot.log' })
     ],
 });
 
@@ -26,12 +26,12 @@ function getNewNightmare() {
 cron.schedule('* * * * *', () => {
     let newNightmare = getNewNightmare();
 
-    // try {
-    //     xvfb.startSync();
-    // }
-    // catch (e) {
-    //     console.log(e);
-    // }
+    try {
+        xvfb.startSync();
+    }
+    catch (e) {
+        console.log(e);
+    }
 
     logger.info(`[${new Date}] Router reboot initiated...`)
     //console.log('Rebooting...');
@@ -40,13 +40,15 @@ cron.schedule('* * * * *', () => {
         .goto('http://192.168.0.1/')
         .wait('input[name=username]')
         .insert('input[name=username]', 'admin')
-        .insert('input[name=password]', 'password')
+        .insert('input[name=password]', 'pyrzy5-bIzbid-nikxev')
         .click('input[value="Log in"]')
         .wait(2000)
         .evaluate(() => {
             var allButtons = document.getElementsByTagName('a');
             for (var i = 0; i < allButtons.length; i++) {
-                if (allButtons[i].innerText == 'Reset') allButtons[i].id = 'resetbutton';
+                if (allButtons[i].innerText == 'Reset') {
+                    allButtons[i].id = 'resetbutton';
+                }
             }
         })
         .click('a[id=resetbutton]')
@@ -62,7 +64,7 @@ cron.schedule('* * * * *', () => {
             newNightmare = null;
         })
         .catch(err => {
-            logger.info(`[${new Date}] An unknown error occured. ${err}`)
+            logger.info(`[${new Date}] An error occured. ${err}`)
             newNightmare = null;
         })
 
