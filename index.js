@@ -13,7 +13,7 @@ const logger = winston.createLogger({
     format: winston.format.simple(),
     transports: [
         //new winston.transports.File({ filename: 'router-reboot.log' }),
-        new winston.transports.File({ filename: 'var/log/router-reboot.log' })
+        new winston.transports.File({ filename: '/var/log/router-reboot.log' })
     ],
 });
 
