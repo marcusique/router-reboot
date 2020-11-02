@@ -2,7 +2,7 @@ const initNightmare = require('nightmare'),
   Xvfb = require('xvfb'),
   keys = require('./config/keys'),
   cron = require('node-cron'),
-  xvfb = new Xvfb(),
+  xvfb = new Xvfb(['-screen', '0', '1280x1024x24']),
   winston = require('winston'),
   nightmareOptions = {
     gotoTimeout: 10000,
