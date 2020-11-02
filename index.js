@@ -62,10 +62,12 @@ cron.schedule('* * * * *', () => {
       logger.info(`[${new Date()}] Router rebooted successfully.`);
       console.log(`[${new Date()}] Router rebooted successfully.`);
       newNightmare = null;
+      xvfb.stopSync();
     })
     .catch((err) => {
       logger.info(`[${new Date()}] An error occured. ${err}`);
       console.log(`[${new Date()}] An error occured. ${err}`);
       newNightmare = null;
+      xvfb.stopSync();
     });
 });
