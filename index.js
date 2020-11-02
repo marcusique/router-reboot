@@ -24,7 +24,7 @@ function getNewNightmare() {
 }
 
 /* RUN EVERY N HOURS */
-cron.schedule('59 6 * * *', () => {
+cron.schedule('* * * * *', () => {
   let newNightmare = getNewNightmare();
 
   try {
@@ -55,7 +55,7 @@ cron.schedule('59 6 * * *', () => {
     .wait('input[value=Reboot]')
     .click('input[value=Reboot]')
     .wait('input[value=Ok]')
-    .click('input[value=Ok]')
+    //.click('input[value=Ok]')
     .cookies.clearAll()
     .end()
     .then(() => {
