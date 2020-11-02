@@ -2,7 +2,7 @@ const initNightmare = require('nightmare'),
   Xvfb = require('xvfb'),
   keys = require('./config/keys'),
   cron = require('node-cron'),
-  xvfb = new Xvfb(),
+  //xvfb = new Xvfb(),
   winston = require('winston'),
   nightmareOptions = {
     gotoTimeout: 10000,
@@ -27,11 +27,11 @@ function getNewNightmare() {
 cron.schedule('* * * * *', () => {
   let newNightmare = getNewNightmare();
 
-  try {
-    xvfb.startSync();
-  } catch (e) {
-    console.log('Error with XVFB: ' + e);
-  }
+  // try {
+  //   xvfb.startSync();
+  // } catch (e) {
+  //   console.log('Error with XVFB: ' + e);
+  // }
 
   logger.info(`[${new Date()}] Router reboot initiated...`);
   console.log(`[${new Date()}] Router reboot initiated...`);
