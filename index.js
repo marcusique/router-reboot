@@ -30,7 +30,7 @@ cron.schedule('* * * * *', () => {
   try {
     xvfb.startSync();
   } catch (e) {
-    console.log(e);
+    console.log('Error with XVFB: ' + e);
   }
 
   logger.info(`[${new Date()}] Router reboot initiated...`);
