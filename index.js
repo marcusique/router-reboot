@@ -1,13 +1,13 @@
 const initNightmare = require('nightmare'),
-  Xvfb = require('xvfb'),
-  keys = require('./config/keys'),
+  //Xvfb = require('xvfb'),
+  //keys = require('./config/keys'),
   cron = require('node-cron'),
-  xvfb = new Xvfb(),
+  //xvfb = new Xvfb(),
   winston = require('winston'),
   nightmareOptions = {
     gotoTimeout: 10000,
     loadTimeout: 15000,
-    show: false,
+    show: true,
   };
 
 const logger = winston.createLogger({
@@ -27,20 +27,20 @@ function getNewNightmare() {
 cron.schedule('* * * * *', () => {
   let newNightmare = getNewNightmare();
 
-  try {
-    xvfb.startSync();
-  } catch (e) {
-    console.log('Error with XVFB: ' + e);
-  }
+  // try {
+  //   xvfb.startSync();
+  // } catch (e) {
+  //   console.log('Error with XVFB: ' + e);
+  // }
 
   logger.info(`[${new Date()}] Router reboot initiated...`);
   console.log(`[${new Date()}] Router reboot initiated...`);
 
   newNightmare
-    .goto(keys.routerURL)
+    .goto('http://192.168.0.1')
     .wait('input[name=username]')
-    .insert('input[name=username]', keys.routerUsername)
-    .insert('input[name=password]', keys.routerPwd)
+    .insert('input[name=username]', 'admin')
+    .insert('input[name=password]', 'pyrzy5-bIzbid-nikxev')
     .click('input[value="Log in"]')
     .wait(2000)
     .evaluate(() => {
@@ -62,12 +62,12 @@ cron.schedule('* * * * *', () => {
       logger.info(`[${new Date()}] Router rebooted successfully.`);
       console.log(`[${new Date()}] Router rebooted successfully.`);
       newNightmare = null;
-      xvfb.stopSync();
+      //xvfb.stopSync();
     })
     .catch((err) => {
       logger.info(`[${new Date()}] An error occured. ${err}`);
       console.log(`[${new Date()}] An error occured. ${err}`);
       newNightmare = null;
-      xvfb.stopSync();
+      //xvfb.stopSync();
     });
 });
