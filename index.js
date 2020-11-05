@@ -2,7 +2,7 @@ const initNightmare = require('nightmare'),
   Xvfb = require('xvfb'),
   keys = require('./config/keys'),
   cron = require('node-cron'),
-  xvfb = new Xvfb(),
+  //xvfb = new Xvfb(),
   winston = require('winston'),
   nightmareOptions = {
     gotoTimeout: 10000,
@@ -26,11 +26,11 @@ function getNewNightmare() {
 /* RUN EVERY N HOURS */
 //cron.schedule('* * * * *', () => {
 
-try {
-  xvfb.startSync();
-} catch (e) {
-  console.log('Error with XVFB: ' + e);
-}
+// try {
+//   xvfb.startSync();
+// } catch (e) {
+//   console.log('Error with XVFB: ' + e);
+// }
 
 let newNightmare = getNewNightmare();
 
@@ -63,12 +63,12 @@ newNightmare
     logger.info(`[${new Date()}] Router rebooted successfully.`);
     console.log(`[${new Date()}] Router rebooted successfully.`);
     newNightmare = null;
-    xvfb.stopSync();
+    //xvfb.stopSync();
   })
   .catch((err) => {
     logger.info(`[${new Date()}] An error occured. ${err}`);
     console.log(`[${new Date()}] An error occured. ${err}`);
     newNightmare = null;
-    xvfb.stopSync();
+    //xvfb.stopSync();
   });
 //});
