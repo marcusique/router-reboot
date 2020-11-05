@@ -1,6 +1,6 @@
 const initNightmare = require('nightmare'),
   //Xvfb = require('xvfb'),
-  //keys = require('./config/keys'),
+  keys = require('./config/keys'),
   cron = require('node-cron'),
   //xvfb = new Xvfb(),
   winston = require('winston'),
@@ -24,50 +24,51 @@ function getNewNightmare() {
 }
 
 /* RUN EVERY N HOURS */
-cron.schedule('* * * * *', () => {
-  let newNightmare = getNewNightmare();
+//cron.schedule('* * * * *', () => {
 
-  // try {
-  //   xvfb.startSync();
-  // } catch (e) {
-  //   console.log('Error with XVFB: ' + e);
-  // }
+try {
+  xvfb.startSync();
+} catch (e) {
+  console.log('Error with XVFB: ' + e);
+}
 
-  logger.info(`[${new Date()}] Router reboot initiated...`);
-  console.log(`[${new Date()}] Router reboot initiated...`);
+let newNightmare = getNewNightmare();
 
-  newNightmare
-    .goto('http://192.168.0.1')
-    .wait('input[name=username]')
-    .insert('input[name=username]', 'admin')
-    .insert('input[name=password]', 'pyrzy5-bIzbid-nikxev')
-    .click('input[value="Log in"]')
-    .wait(2000)
-    .evaluate(() => {
-      var allButtons = document.getElementsByTagName('a');
-      for (var i = 0; i < allButtons.length; i++) {
-        if (allButtons[i].innerText == 'Reset') {
-          allButtons[i].id = 'resetbutton';
-        }
+logger.info(`[${new Date()}] Router reboot initiated...`);
+console.log(`[${new Date()}] Router reboot initiated...`);
+
+newNightmare
+  .goto(keys.routerURL)
+  .wait('input[name=username]')
+  .insert('input[name=username]', keys.routerUsername)
+  .insert('input[name=password]', keys.routerPwd)
+  .click('input[value="Log in"]')
+  .wait(2000)
+  .evaluate(() => {
+    var allButtons = document.getElementsByTagName('a');
+    for (var i = 0; i < allButtons.length; i++) {
+      if (allButtons[i].innerText == 'Reset') {
+        allButtons[i].id = 'resetbutton';
       }
-    })
-    .click('a[id=resetbutton]')
-    .wait('input[value=Reboot]')
-    .click('input[value=Reboot]')
-    .wait('input[value=Ok]')
-    //.click('input[value=Ok]')
-    .cookies.clearAll()
-    .end()
-    .then(() => {
-      logger.info(`[${new Date()}] Router rebooted successfully.`);
-      console.log(`[${new Date()}] Router rebooted successfully.`);
-      newNightmare = null;
-      //xvfb.stopSync();
-    })
-    .catch((err) => {
-      logger.info(`[${new Date()}] An error occured. ${err}`);
-      console.log(`[${new Date()}] An error occured. ${err}`);
-      newNightmare = null;
-      //xvfb.stopSync();
-    });
-});
+    }
+  })
+  .click('a[id=resetbutton]')
+  .wait('input[value=Reboot]')
+  .click('input[value=Reboot]')
+  .wait('input[value=Ok]')
+  //.click('input[value=Ok]')
+  .cookies.clearAll()
+  .end()
+  .then(() => {
+    logger.info(`[${new Date()}] Router rebooted successfully.`);
+    console.log(`[${new Date()}] Router rebooted successfully.`);
+    newNightmare = null;
+    xvfb.stopSync();
+  })
+  .catch((err) => {
+    logger.info(`[${new Date()}] An error occured. ${err}`);
+    console.log(`[${new Date()}] An error occured. ${err}`);
+    newNightmare = null;
+    xvfb.stopSync();
+  });
+//});
