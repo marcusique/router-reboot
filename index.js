@@ -26,11 +26,11 @@ function getNewNightmare() {
 /* RUN EVERY N HOURS */
 //cron.schedule('* * * * *', () => {
 
-// try {
-//   xvfb.startSync();
-// } catch (e) {
-//   console.log('Error with XVFB: ' + e);
-// }
+try {
+  xvfb.startSync();
+} catch (e) {
+  console.log('Error with XVFB: ' + e);
+}
 
 let newNightmare = getNewNightmare();
 
